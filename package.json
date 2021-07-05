@@ -9,7 +9,9 @@
     "lint": "next lint",
     "test": "npx hardhat test",
     "deploy:local": "concurrently \"npx hardhat node\" \"npx hardhat run scripts/deploy.js --network localhost\"",
-    "deploy:testnet": "npx hardhat run scripts/deploy.js --network ropsten"
+    "deploy:testnet": "npx hardhat run scripts/deploy.js --network ropsten",
+    "docker:build": "docker build -t ilovelili/nft-marketplace .",
+    "docker:run": "docker run -p 4200:4200 ilovelili/nft-marketplace"
   },
   "dependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",
