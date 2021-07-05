@@ -4,6 +4,7 @@
 // When running the script with `hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
 const hre = require("hardhat");
+const fs = require("fs");
 
 async function main() {
 	const NFTMarket = await hre.ethers.getContractFactory("NFTMarket");
@@ -15,6 +16,14 @@ async function main() {
 	const nft = await NFT.deploy(nftMarket.address);
 	await nft.deployed();
 	console.log("nft deployed to:", nft.address);
+
+	fs.writeFileSync(
+		"config.js",
+		`
+	export const nftmarketaddress = "${nftMarket.address}";
+	export const nftaddress = "${nft.address}";
+	`
+	);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

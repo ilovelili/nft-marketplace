@@ -14,7 +14,7 @@ function MyApp({ Component, pageProps }) {
 						<a className="mr-4 text-blue-500">Create NFT</a>
 					</Link>
 					<Link href="/my-nfts">
-						<a className="mr-4 text-blue-500">My NFTSs</a>
+						<a className="mr-4 text-blue-500">My NFTs</a>
 					</Link>
 				</div>
 			</nav>

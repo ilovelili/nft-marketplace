@@ -4,6 +4,7 @@ import { create as ipfsHttpClient } from "ipfs-http-client";
 import { useRouter } from "next/router";
 import Web3Modal from "web3modal";
 import web3 from "web3";
+import Image from "next/image";
 
 const client = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
 
@@ -27,7 +28,7 @@ export default function Home() {
 		const signer = provider.getSigner();
 
 		let contract = new ethers.Contract(nftaddress, NFT.abi, signer);
-		let transaction = await contract.createToken(url);
+		let transaction = await contract.createToken(url, { gasLimit: 600000 });
 		let tx = await transaction.wait();
 		let event = tx.events[0];
 		let value = event.args[2];
@@ -37,7 +38,7 @@ export default function Home() {
 		const listingPrice = web3.utils.toWei("0.1", "ether");
 
 		contract = new ethers.Contract(nftmarketaddress, Market.abi, signer);
-		transaction = await contract.createMarketItem(nftaddress, tokenId, price, { value: listingPrice });
+		transaction = await contract.createMarketItem(nftaddress, tokenId, price, { value: listingPrice, gasLimit: 600000 });
 
 		await transaction.wait();
 		router.push("/");
@@ -91,7 +92,7 @@ export default function Home() {
 					onChange={(e) => updateFormInput({ ...formInput, price: e.target.value })}
 				/>
 				<input type="file" name="NFT" className="my-4" onChange={onChange} />
-				{fileUrl && <img className="rounded mt-4" width="350" src={fileUrl} />}
+				{fileUrl && <Image className="rounded mt-4" width="100%" height="100%" src={fileUrl} />}
 				<button onClick={createMarket} className="mt-4 bg-blue-500 text-white rounded p-4 shadow-lg">
 					Create NFT
 				</button>

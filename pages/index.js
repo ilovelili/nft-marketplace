@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import web3 from "web3";
 import axios from "axios";
 import Web3Modal from "web3modal";
+import Image from "next/image";
 
 import { nftaddress, nftmarketaddress } from "../config";
 
@@ -16,7 +17,8 @@ export default function Home() {
 		loadNFTs();
 	}, []);
 	async function loadNFTs() {
-		const provider = new ethers.providers.JsonRpcProvider();
+		const provider = new ethers.providers.JsonRpcProvider(`https://eth-ropsten.alchemyapi.io/v2/7yjf-MSjSZCcJrMFuBzRRuV-6jWxseqz`);
+		// const provider = new ethers.providers.JsonRpcProvider();
 		const tokenContract = new ethers.Contract(nftaddress, NFT.abi, provider);
 		const marketContract = new ethers.Contract(nftmarketaddress, Market.abi, provider);
 		const data = await marketContract.fetchMarketItems();
@@ -67,7 +69,7 @@ export default function Home() {
 				<div className="grid grid-cols-2 gap-4 pt-8">
 					{nfts.map((nft, i) => (
 						<div key={i} className="border p-4 shadow">
-							<img src={nft.image} className="rounded" />
+							<Image src={nft.image} className="rounded" width="100%" height="100%" />
 							<p className="text-2xl my-4 font-bold">Price: {nft.price}</p>
 							<button className="bg-green-600 text-white py-2 px-12 rounded" onClick={() => buyNft(nft)}>
 								Buy NFT
